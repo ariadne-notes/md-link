@@ -18,12 +18,19 @@ def strip_scheme(url: str) -> str:
 
 
 def strip_html_ext(text: str) -> str:
-    """Drop a trailing .html / .htm from the end.
+    """Drop a .html / .htm extension off the path.
+
+    Matches the extension at the very end *or* right before a ?query or
+    #fragment, so the trailing #anchor / query string is preserved.
 
     >>> strip_html_ext("pushpopswap.com/nat64.html")
     'pushpopswap.com/nat64'
+    >>> strip_html_ext("pushpopswap.com/nat64.html#config")
+    'pushpopswap.com/nat64#config'
+    >>> strip_html_ext("pushpopswap.com/nat64.html?ref=x")
+    'pushpopswap.com/nat64?ref=x'
     """
-    return re.sub(r"\.html?$", "", text, flags=re.IGNORECASE)
+    return re.sub(r"\.html?(?=[?#]|$)", "", text, flags=re.IGNORECASE)
 
 
 def display_text(url: str) -> str:

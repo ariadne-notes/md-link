@@ -35,7 +35,7 @@
       font-size: 0.9rem;
     }
     button:hover { background: #4477aa; }
-    #output, #output-discord {
+    #output, #output-discord, #output-clean {
       margin-top: 1.5rem;
       background: #2a2a2a;
       border: 1px solid #444;
@@ -64,6 +64,10 @@
   <div id="output-discord"></div>
   <button onclick="copyResult('output-discord')" style="margin-top:0.4rem; background:#3a6644">Copy</button>
 
+  <p style="color:#888; font-size:0.8rem; margin-top:1.2rem; margin-bottom:0.2rem">Clean (URL as text, no preview)</p>
+  <div id="output-clean"></div>
+  <button onclick="copyResult('output-clean')" style="margin-top:0.4rem; background:#3a6644">Copy</button>
+
   <div id="status"></div>
 
   <script>
@@ -88,6 +92,7 @@
         if (!resp.ok) throw new Error(data.detail || 'Error');
         document.getElementById('output').textContent = data.markdown;
         document.getElementById('output-discord').textContent = data.discord;
+        document.getElementById('output-clean').textContent = data.clean;
         document.getElementById('status').textContent = '';
       } catch (err) {
         document.getElementById('status').textContent = '✗ ' + err.message;

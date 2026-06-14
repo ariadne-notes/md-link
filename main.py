@@ -3,6 +3,7 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 import httpx
 from bs4 import BeautifulSoup
+from linkformat import clean_link
 
 app = FastAPI()
 
@@ -34,7 +35,11 @@ async def fetch_title(req: URLRequest):
     # Add a Discodr Version
     markdown = f"[{title}]({req.url})"
     discord = f"[{title}](<{req.url}>)"
-    return {"markdown": markdown, "discord": discord}
+
+    # Clean URL-as-text version (scheme + .html trimmed off the label)
+    clean = clean_link(req.url)
+
+    return {"markdown": markdown, "discord": discord, "clean": clean}
 
 # Serve the frontend last (catch-all)
 app.mount("/", StaticFiles(directory="static", html=True), name="static")
